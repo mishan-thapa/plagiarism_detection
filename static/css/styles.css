@@ -1,0 +1,32 @@
+body {
+    background-color: #F2E2D2;
+}
+
+.home_head{
+    display: flex;
+    justify-content: center;
+    text-decoration: underline;
+}
+
+form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.input-group {
+    display: inline-block;
+    vertical-align: top;
+    margin: 0 auto;
+}
+
+.submit_button{
+    background-color: aqua;
+}
+
+.result {
+    width: fit-content;
+    margin: 0 auto;
+    text-align: center;
+  }
+  
+  
