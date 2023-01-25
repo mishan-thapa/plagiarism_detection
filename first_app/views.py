@@ -4,7 +4,7 @@ from django.http import HttpResponse
 # Create your views here.
 
 from .lsa import lsa_similarity
-from .word_sim import word_similarity
+from .predict import predict_lab
 from .finger_sim import fingerprint_similarity
 
 def home(request):
@@ -22,11 +22,11 @@ def check(request):
         p1 = (request.POST["paragraph1"])
         p2 = (request.POST["paragraph2"])
         lsa_sim = lsa_similarity(p1,p2)
-        #word_sim = word_similarity(p1,p1)
         finger_sim = fingerprint_similarity(p1,p2)
+        label = predict_lab(lsa_sim,finger_sim)
         sims = {
         "lsa_similarity" : lsa_sim,
-        #"word_similarity" : word_sim,
-        "fingerprint_similarity" : finger_sim
+        "fingerprint_similarity" : finger_sim,
+        "plag_label" : label
         }
         return render(request, 'result.html', sims)
