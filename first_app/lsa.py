@@ -6,8 +6,27 @@ import numpy as np
 #import library for cosine similarity
 import pandas as pd
 
+
+from .preprocessing import punc_removal
+from .preprocessing import stopword_removal
+from .preprocessing import tokenization
+
+
 def lsa_similarity(p1,p2):
-    docs = [p1,p2]
+    p1 = punc_removal(p1)
+    p2 = punc_removal(p2)
+    t1 = tokenization(p1)
+    t2 = tokenization(p2)
+    s1 = stopword_removal(t1)
+    s2 = stopword_removal(t2)
+    str1=""
+    str2=""
+    for ele in s1:
+        str1 = str1 + ele +" "
+    
+    for ele in s2:
+        str2 = str2 + ele +" "
+    docs = [str1,str2]
     vectorizer = TfidfVectorizer()
     dictionary = vectorizer.fit_transform(docs)
     inarr = dictionary.todense().tolist()

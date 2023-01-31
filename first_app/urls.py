@@ -5,6 +5,7 @@ from first_app import views
 
 urlpatterns = [
         path("", views.home, name="home"),
-        path("check", views.check, name="check")
+        path("check", views.check, name="check"),
+        path("try", views.tryy, name="tryy")
 ]
 

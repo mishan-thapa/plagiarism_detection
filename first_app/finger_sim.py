@@ -1,14 +1,29 @@
 from random import shuffle
 
-def fingerprint_similarity(doc1,doc2):
+#importing the local preprocessing function
+from .preprocessing import punc_removal
+from .preprocessing import tokenization
+
+def fingerprint_similarity(p1,p2):
+    p1 = punc_removal(p1)
+    p2 = punc_removal(p2)
+    t1 = tokenization(p1)
+    t2 = tokenization(p2)
+    str1=""
+    str2=""
+    for ele in t1:
+        str1 = str1 + ele +" "
+    
+    for ele in t2:
+        str2 = str2 + ele +" "
     def shingle(text:str,k:int):
         shingle_set =[]
         for i in range(len(text)-k+1):
             shingle_set.append(text[i:i+k])
         return set(shingle_set)
 
-    d1 = shingle(doc1,2)
-    d2 = shingle(doc2,2)
+    d1 = shingle(str1,2)
+    d2 = shingle(str2,2)
 
     vocab = list(d1.union(d2))
 
