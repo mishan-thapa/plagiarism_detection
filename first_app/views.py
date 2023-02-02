@@ -18,15 +18,11 @@ def home(request):
     return render(request, 'home.html',context)
 
 def check(request):
-
     lsa_sim = None
     word_sim = None
     if request.method == "POST":
         str1 = (request.POST["paragraph1"])
         str2 = (request.POST["paragraph2"])
-        
-
-        
         lsa_sim = lsa_similarity(str1,str2)
         finger_sim = fingerprint_similarity(str1,str2)
         word_sim = calculate_wordsimilarity(str1,str2)
@@ -45,3 +41,37 @@ def check(request):
 
 def tryy(request):
     return render(request, 'try.html')
+
+from .models import tfiles
+
+def upload(request):
+    if request.method == 'POST':
+        print("run vayo hai")
+        print(request.FILES)
+        f1 = request.FILES.get("fileone")
+        print(f1)
+        f2 = request.FILES.get("filetwo")
+        print(f2)
+        f1_text = f1.read()
+        f2_text = f2.read()
+        print(f1_text)
+        print(type(f1_text))
+        f11_text = f1_text.decode()
+        f22_text = f2_text.decode()
+        print(type(f11_text))
+        print(f11_text)
+        ngram_sim = ngrams_similarity(f11_text,f22_text,2)
+        lsa_sim = lsa_similarity(f11_text,f22_text)
+        finger_sim = fingerprint_similarity(f11_text,f22_text)
+        word_sim = calculate_wordsimilarity(f11_text,f22_text)
+        label = predict_lab(lsa_sim,finger_sim,word_sim,ngram_sim)
+        sims = {
+        "lsa_similarity" : lsa_sim,
+        "fingerprint_similarity" : finger_sim,
+        "word_sim" : word_sim,
+        "ngram_sim" : ngram_sim,
+        "plag_label" : label
+        }
+        #return HttpResponse("success")
+        return render(request, 'result.html', sims)
+        

@@ -28,10 +28,7 @@ def ngrams_similarity(p1,p2,n):
     set2 = set(bigrams2)
     A = set(set1)
     B = set(set2)
-    A_B = A.difference(B)
-    B_A = B.difference(A)
     numerator = len(A.intersection(B))
     min_len = min(len(A), len(B))
-    denominator = len(A) + len(B) - len(A.intersection(B))
     jaccard_similarity = numerator/min_len
     return jaccard_similarity

@@ -1,24 +1,68 @@
-{% extends "base.html"  %}
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+      .container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-top: 50px;
+      }
+      
+      h1 {
+        font-size: 24px;
+        margin-bottom: 20px;
+      }
+      
+      .result {
+        width: 400px;
+        height: 300px;
+        background-color: lightgray;
+        border-radius: 10px;
+        padding: 20px;
+        text-align: center;
+      }
+      
+      p {
+        font-size: 18px;
+        margin-bottom: 10px;
+      }
+      
+      .status {
+        font-size: 20px;
+        font-weight: bold;
+        margin-bottom: 20px;
+      }
 
-{% block content %}
+      .home_head{
+    display: flex;
+    justify-content: center;
+    text-decoration: underline;
+}
+    </style>
+  </head>
+  <title>Plagiarism Detector</title>
+  <body>
+    <div class="home_head">
+        <h1>Plagiarism Detector</h1>
+    </div>
+    <div class="container">
+      <h1>Result :</h1>
+      <div class="result">
+        {% if plag_label == 1 %}
+        <h2>Plagiarised</h2>
+        {% endif %}
+        {% if plag_label == 0 %}
+        <h2>Not Plagiarised</h2>
+        {% endif %}
+        <p>lsa similarity is : {{lsa_similarity}}</p>
+        <p>fingerprint similarity is :  {{fingerprint_similarity}}</p>
+        <p>word similarity % is : {{word_sim}}</p>
+        <p>ngram similarity % is : {{ngram_sim}}</p>
+      </div>
+    </div>
+  </body>
+</html>
 
-lsa similarity is : {{lsa_similarity}}
-
-<br>
-fingerprint similarity is :  {{fingerprint_similarity}}
-
-<br>
-
-word similarity % is : {{word_sim}}
-
-<br>
-
-ngram similarity % is : {{ngram_sim}}
-
-<br>
-
-label of plagiarism is : {{plag_label}}
 
 
-
-{% endblock %}

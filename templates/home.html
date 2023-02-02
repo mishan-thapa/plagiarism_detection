@@ -1,29 +1,68 @@
-{% extends "base.html"  %}
 
-{% block content %}
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+      form {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-top: 50px;
+      }
+      
+      label {
+        font-size: 18px;
+        margin-bottom: 10px;
+      }
+      
+      input[type="file"] {
+        margin-bottom: 20px;
+      }
+      
+      input[type="submit"] {
+        width: 100px;
+        height: 30px;
+        background-color: green;
+        color: white;
+        font-size: 16px;
+        border-radius: 5px;
+        cursor: pointer;
+      }
 
+      .home_head{
+        display: flex;
+        justify-content: center;
+        text-decoration: underline;
+      }
 
-<form action="check" method="post">
-    {% csrf_token %}
-      <div class="input-group">
-        <label for="paragraph1">Paragraph 1:</label>
-        <textarea id="paragraph1" name="paragraph1" rows="4" cols="30"></textarea>
+      .in_area {
+        width: 400px;
+        height: 200px;
+        background-color: lightgray;
+        border-radius: 10px;
+        padding: 10px;
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="home_head">
+      <h1>Plagiarism Detector</h1>
+    </div>
+
+    
+    <form action="upload" method="POST" enctype="multipart/form-data">
+      {% csrf_token %}
+      <div class="in_area">
+        <label >File 1:</label>
+        <input type="file" name="fileone">
+        <br><br>
+        <label >File 2:</label>
+        <input type="file" name="filetwo">
+        <br><br>
+        <button type="submit">Check </button>
       </div>
-      <div class="input-group">
-        <label for="paragraph2">Paragraph 2:</label>
-        <textarea id="paragraph2" name="paragraph2" rows="4" cols="30"></textarea>
-      </div>
-      <br>
-      <input class="submit_button" type="submit" value="Submit">
-</form>
-<br> 
-<br> <br> <br> 
-
-{% if result %}
-        <h3>result: {{ result }}</h3>
-    {% endif %}
-  
-  
-  
-
-{% endblock %}
+    </form>
+    
+  </body>
+</html>

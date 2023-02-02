@@ -1,5 +1,6 @@
+/* for base page */
 body {
-    background-color: #F2E2D2;
+    background-color: #ffffff;
 }
 
 .home_head{
@@ -7,7 +8,7 @@ body {
     justify-content: center;
     text-decoration: underline;
 }
-
+/* css for home page */
 form {
     display: flex;
     justify-content: center;
@@ -22,11 +23,40 @@ form {
 .submit_button{
     background-color: aqua;
 }
-
+/*
 .result {
     width: fit-content;
     margin: 0 auto;
     text-align: center;
+  } */
+  
+  
+
+/* below is for result page */
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 50px;
+  }
+
+  h1 {
+    font-size: 24px;
+    margin-bottom: 20px;
   }
   
+  .result {
+    width: 400px;
+    height: 200px;
+    background-color: lightgray;
+    border-radius: 10px;
+    padding: 20px;
+    text-align: center;
+  }
+  
+  p {
+    font-size: 18px;
+    margin-bottom: 10px;
+  }
   

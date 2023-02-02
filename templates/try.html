@@ -1,49 +1,67 @@
+
 <!DOCTYPE html>
 <html>
   <head>
     <style>
-      .container {
+      form {
         display: flex;
         flex-direction: column;
         align-items: center;
         margin-top: 50px;
       }
       
-      h1 {
-        font-size: 24px;
-        margin-bottom: 20px;
-      }
-      
-      .result {
-        width: 400px;
-        height: 200px;
-        background-color: lightgray;
-        border-radius: 10px;
-        padding: 20px;
-        text-align: center;
-      }
-      
-      p {
+      label {
         font-size: 18px;
         margin-bottom: 10px;
       }
       
-      .status {
-        font-size: 20px;
-        font-weight: bold;
+      input[type="file"] {
         margin-bottom: 20px;
+      }
+      
+      input[type="submit"] {
+        width: 100px;
+        height: 30px;
+        background-color: green;
+        color: white;
+        font-size: 16px;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+
+      .home_head{
+        display: flex;
+        justify-content: center;
+        text-decoration: underline;
+      }
+
+      .in_area {
+        width: 400px;
+        height: 200px;
+        background-color: lightgray;
+        border-radius: 10px;
+        padding: 10px;
+        text-align: center;
       }
     </style>
   </head>
   <body>
-    <div class="container">
-      <h1>Result of the Process</h1>
-      <div class="result">
-        <p class="status">Success</p>
-        <p>Process ID: 12345</p>
-        <p>Start Time: 01/01/2023 12:00 PM</p>
-        <p>End Time: 01/01/2023 1:00 PM</p>
-      </div>
+    <div class="home_head">
+      <h1>Plagiarism Detector</h1>
     </div>
+
+    
+    <form action="">
+      <div class="in_area">
+        <label for="file1">File 1:</label>
+        <input type="file" id="file1" name="file1">
+        <br><br>
+        <label for="file2">File 2:</label>
+        <input type="file" id="file2" name="file2">
+        <br><br>
+        <input type="submit" value="Submit">
+      </div>
+    </form>
+    
   </body>
 </html>
