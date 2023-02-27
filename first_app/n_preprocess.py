@@ -1,6 +1,3 @@
-
-import numpy as np
-#import library for cosine similarity
 import pandas as pd
 import numpy as np
 import math
