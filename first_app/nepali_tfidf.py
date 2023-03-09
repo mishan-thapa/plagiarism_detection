@@ -84,5 +84,5 @@ def calculate_tfidfsimilarity(p1,p2):
     denom=np.sqrt(sum(np.square(array1)))*np.sqrt(sum(np.square(array2)))
 
         # Similarity:
-    similarity = round(numerator/denom,3)
+    similarity = round(numerator/denom,2)
     return similarity

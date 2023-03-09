@@ -34,4 +34,4 @@ def overlap_similarity(text1, text2,n):
         jaccard_similarity=0
     else:
         jaccard_similarity = numerator/min_len
-    return jaccard_similarity
+    return round(jaccard_similarity,2)
