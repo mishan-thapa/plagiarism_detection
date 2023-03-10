@@ -20,14 +20,15 @@ def home(request):
 def check(request):
     #lsa_sim = None
     if request.method == "POST":
+        print("vayo")
         str1 = (request.POST["paragraph1"])
         str2 = (request.POST["paragraph2"])
         lsa_sim = calculate_tfidfsimilarity(str1,str2)
         #finger_sim = fingerprint_similarity(str1,str2)
-        ngram_sim = overlap_similarity(str1,str2,3)
+        ngram_sim = overlap_similarity(str1,str2,2)
         label = predict_lab(lsa_sim,ngram_sim)
         sims = {
-        "tfidf_similarity" : lsa_sim,
+        "lsa_similarity" : lsa_sim,
         "ngram_sim" : ngram_sim,
         "plag_label" : label
         }
