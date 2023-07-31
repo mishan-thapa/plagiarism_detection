@@ -16,14 +16,10 @@ def get_all_synonyms(search_word):
     # Load the JSON file
     with open('first_app/output.json') as file:
         data = json.load(file)
-
-
-
     # Iterate over all data elements
     for entry in data:
         word = entry['word']
         synonyms = entry['synonyms']
-
         # Insert the word and its qualifying senses into the Trie
         trie[word] = synonyms
         
