@@ -1,11 +1,12 @@
 from django.urls import path
 from . import views
-from .views import create_book, pos_tagging
+from .views import create_book, pos_tagging, plagiarism_check
 
 urlpatterns =[
     path('', views.getData, name="getwala"),
     path('synset/', create_book.as_view(), name='synset'),
     path('pos_tagging/', pos_tagging.as_view(), name='pos_tagging'),
+    path('plagiarism_check/', plagiarism_check.as_view(), name='plagiarism_check'),
 ]
 
 

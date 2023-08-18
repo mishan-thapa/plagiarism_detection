@@ -55,8 +55,11 @@
         {% if plag_label == 0 %}
         <h2>Not Plagiarised</h2>
         {% endif %}
-        <p>TF-IDF similarity is : {{lsa_similarity}}</p>
-        <p>Bi-gram similarity is : {{ngram_sim}}</p>
+        <p>N-gram similarity is : {{ngram_sim}}</p>
+        <p>fingerprint similarity : {{finger_sim}}</p>
+        <p>word similarity : {{word_sim}}</p>
+        <p>TF-IDF similarity is : {{tfidf_sim}}</p>
+        
       </div>
     </div>
   </body>
