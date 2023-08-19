@@ -105,8 +105,6 @@ def thesis_upload(request):
     
 
 from docx import Document
-
-
 def view_thesis(request):
     # thesis_docx_data = thesis_docx.objects.all()
     # for a in thesis_docx_data:
@@ -124,60 +122,76 @@ def view_thesis(request):
     return HttpResponse("vayo")
 
 
-#to get the docx file from user and check their similarity
-
 
 from django.shortcuts import render
 from docx import Document
 from .forms import DocxUploadForm
+from .highlight_paragraph import process_plagiarized_paragraphs
+import io
+from .docx_to_paragraph import count_total_words,count_total_words_one_paragraph
 
 def extract_paragraphs(request):
     if request.method == 'POST':
         form = DocxUploadForm(request.POST, request.FILES)
         if form.is_valid():
             docx_file = request.FILES['docx_file']
-            document = Document(docx_file)
-            paragraphs = [para.text.strip() for para in document.paragraphs if para.text.strip()]  # Filter out empty or whitespace paragraphs
-            # paragraphs = get_paragraphs_from_word_file(docx_file)
-            print(paragraphs)
-            # print(type(paragraphs))
-            #return render(request, 'result.html', {'paragraphs': paragraphs})
-
+            print(type(docx_file))
+            sus_document = Document(docx_file)
+            print(type(sus_document))
+            input_paragraphs = [para.text.strip() for para in sus_document.paragraphs if para.text.strip()]  # Filter out empty or whitespace paragraphs
             docx_files = thesis_docx.objects.all()
+            file_names = [docx_file.thesis.name for docx_file in docx_files]
             paragraphs_list = []
-
             for docx_file in docx_files:
                 document = Document(docx_file.thesis)
                 #paragraphs = [para.text for para in document.paragraphs]
                 para = [para.text.strip() for para in document.paragraphs if para.text.strip()]  # Filter out empty or whitespace paragraphs
                 #paragraphs = get_paragraphs_from_word_file(document)
                 paragraphs_list.append(para)
-            
-            # print(type(paragraphs_list)) 
-            # print("--")
-            # print(paragraphs_list[0][0])
-
-            # Create a 2D list to store the results
-            results = []
-
+            plagiarised_paragraphs =[]
             # Loop through both lists simultaneously and call the function
-            for para1 in paragraphs:
+            for para1 in input_paragraphs:
+                paragraphs_list_counter =0
                 for para2_group in paragraphs_list:
+                    max_avg_feature_sim =0
+                    is_label_one = 0
                     for para2 in para2_group:
                         ngram_sim = overlap_similarity(para1,para2)
                         tfidf_sim = calculate_tfidfsimilarity(para1,para2)
                         finger_sim = fingerprint_similarity(para1,para2)
                         word_sim = compute_wordsimilarity(para1,para2)
                         label = predict_lab(ngram_sim,finger_sim,word_sim,tfidf_sim)
-                        print(para1)
-                        print("-----")
-                        print(para2)
-                        print("label: ")
-                        print(label)
-                    print("changeeeeeeeeeeee1111111")
-                print("changeeeeeeeeeeee22222222")
-            
-            return render(request, 'try.html', {'paragraphs_list': paragraphs_list})
+                        avg_feature_sim = (ngram_sim + tfidf_sim + finger_sim + word_sim)/4
+                        if(avg_feature_sim > max_avg_feature_sim):
+                            max_avg_feature_sim = avg_feature_sim
+                        if(label == 1):
+                            is_label_one = 1
+                    if is_label_one ==1 :
+                        my_dict = {"paragraph": para1 , "source":file_names[paragraphs_list_counter], "average_feature_score": max_avg_feature_sim}
+                        plagiarised_paragraphs.append(my_dict)
+                    is_label_one = 0
+                    paragraphs_list_counter = paragraphs_list_counter + 1
+            output_file_path = "highlighted_document.docx"  # Replace with the desired output file path
+            target_paragraphs = plagiarised_paragraphs
+            process_plagiarized_paragraphs(sus_document, output_file_path, target_paragraphs)
+            final_plagiarised_paragraphs = {}
+            for entry in plagiarised_paragraphs:
+                paragraph = entry['paragraph']
+                if paragraph in final_plagiarised_paragraphs:
+                    if entry['average_feature_score'] > final_plagiarised_paragraphs[paragraph]['average_feature_score']:
+                        final_plagiarised_paragraphs[paragraph] = entry
+                else:
+                    final_plagiarised_paragraphs[paragraph] = entry
+            final_plagiarised_paragraphs = list(final_plagiarised_paragraphs.values())
+            total_words_input_docx = count_total_words(input_paragraphs)
+            # Calculate and store the similarity index for each paragraph
+            similarity_data = []
+            for entry in final_plagiarised_paragraphs:
+                sim_index = count_total_words_one_paragraph(entry['paragraph'])/ total_words_input_docx
+                similarity_data.append({'source': entry['source'], 'sim_index': sim_index})
+            print(similarity_data)
+            context = {'result_list': similarity_data}
+            return render(request, 'try1.html', context)
     else:
         form = DocxUploadForm()
     return render(request, 'upload.html', {'form': form})
