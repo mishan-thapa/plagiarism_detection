@@ -62,6 +62,7 @@ def find_common_sequences(string1, string2,threshold):
         
     result_list = []
     print(common_sequences)
+    print("--------")
     # Initialize a variable to keep track of the end value of the previous dictionary
     prev_end = None
     if common_sequences:
@@ -86,7 +87,8 @@ def find_common_sequences(string1, string2,threshold):
 
 def highlight_new_wala(final_plagiarised_paragraphs_grouped_sources,doc,docx_file_title_name,docx_file_author_name):
     # Define the text you want to change the color of
-    color = []
+    #color = [(204,0,0),(153,0,153)]
+    color =[]
     number_of_source = 0
     total_plagiarism = 0
     for sources in final_plagiarised_paragraphs_grouped_sources:
@@ -115,6 +117,10 @@ def highlight_new_wala(final_plagiarised_paragraphs_grouped_sources,doc,docx_fil
                     paragraph.clear()
                     #call sentence pattalauni function
                     indexes = find_common_sequences(input_para, database_para, threshold=2)
+                    print(indexes)
+                    print(len(para_text))
+                    print(para_text)
+                    print(target_paragraph)
                     for index in indexes:
                         if index['copied'] is True:
                             print(index['sen_pos'])
@@ -127,7 +133,6 @@ def highlight_new_wala(final_plagiarised_paragraphs_grouped_sources,doc,docx_fil
                     if indexes[-1]['sen_pos'][1]!= len(para_text):
                         run = paragraph.add_run(para_text[index['sen_pos'][1]:len(para_text)])
                         run.font.color.rgb = RGBColor(red, green, blue)
-
                     break
 
     doc.add_page_break()
@@ -157,11 +162,11 @@ def highlight_new_wala(final_plagiarised_paragraphs_grouped_sources,doc,docx_fil
     # Add content to the table cells
     table.cell(0, 0).text = "Thesis Title"
     table.cell(0,0).paragraphs[0].runs[0].bold = True
-    table.cell(0,0).paragraphs[0].runs[0].font.size = Pt(14) 
+    table.cell(0,0).paragraphs[0].runs[0].font.size = Pt(12)
     table.cell(0, 1).text = docx_file_title_name
     table.cell(1, 0).text = "Author"
     table.cell(1,0).paragraphs[0].runs[0].bold = True
-    table.cell(1,0).paragraphs[0].runs[0].font.size = Pt(14) 
+    table.cell(1,0).paragraphs[0].runs[0].font.size = Pt(12)
     table.cell(1, 1).text = docx_file_author_name
 
     # Add Plagiarism Analysis heading
@@ -175,7 +180,7 @@ def highlight_new_wala(final_plagiarised_paragraphs_grouped_sources,doc,docx_fil
     ana_table = doc.add_table(rows=1, cols=2)
     ana_table.cell(0,0).text = "Plagiarized Percentage"
     ana_table.cell(0,0).paragraphs[0].runs[0].bold = True
-    ana_table.cell(0,0).paragraphs[0].runs[0].font.size = Pt(14) 
+    ana_table.cell(0,0).paragraphs[0].runs[0].font.size = Pt(12) 
     ana_table.cell(0,1).text = str(total_plagiarism) +"%"
 
     #doc.add_heading('Plagiarism Analysis').alignment = WD_PARAGRAPH_ALIGNMENT.CENTER
@@ -190,18 +195,18 @@ def highlight_new_wala(final_plagiarised_paragraphs_grouped_sources,doc,docx_fil
     source_table.cell(0,0).text = "Index"
     source_table.cell(0,1).text = "Source Thesis"
     source_table.cell(0,2).text = "Author"
-    source_table.cell(0,3).text = "Plagiarized percentage"
+    source_table.cell(0,3).text = "Percentage"
     # Define the table style with borders
     #table.style = 'Light Shading'
     for cell in source_table.rows[0].cells:
         cell.paragraphs[0].runs[0].bold = True
-        cell.paragraphs[0].runs[0].font.size = Pt(14)
+        cell.paragraphs[0].runs[0].font.size = Pt(10)
     # Add content to the cells (optional)
     for i in range(1,number_of_source+1):
         source_table.cell(i,0).text = str(i)
         source_table.cell(i,1).text = final_plagiarised_paragraphs_grouped_sources[i-1]['source']
         source_table.cell(i,2).text = final_plagiarised_paragraphs_grouped_sources[i-1]['author']+str(i)
-        source_table.cell(i,3).text = str(final_plagiarised_paragraphs_grouped_sources[i-1]['percentage']) + '%'
+        source_table.cell(i,3).text = str(round((final_plagiarised_paragraphs_grouped_sources[i-1]['percentage']),2)) + '%'
         
         for cell in source_table.rows[i].cells:
             cell.paragraphs[0].runs[0].font.color.rgb = RGBColor(color[i-1][0], color[i-1][1], color[i-1][2])

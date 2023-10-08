@@ -226,7 +226,7 @@ def extract_paragraphs(request):
             # Calculate and store the similarity index for each paragraph
             similarity_data = []
             for entry in final_plagiarised_paragraphs:
-                sim_index = round((count_total_words_one_paragraph(entry['paragraph'])/ total_words_input_docx)*100,2)
+                sim_index = round((((count_total_words_one_paragraph(entry['paragraph']))*entry['average_feature_score'])/ total_words_input_docx)*100,2)
                 similarity_data.append({'input_paragraph':entry['paragraph'],'source': entry['source'],'database_paragraph':entry['database_paragraph'], 'sim_index': sim_index})
             print(similarity_data)
 
